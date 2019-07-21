@@ -1,0 +1,19 @@
+{
+  "name": "fast-queue",
+  "version": "1.0.0",
+  "description": "Create And Manage Your jobs fast in queue",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm start"
+  },
+  "keywords": [
+    "Fast",
+    "Job",
+    "Queue"
+  ],
+  "author": "Madhav Palshikar",
+  "license": "ISC",
+  "dependencies": {
+    "redis": "^2.8.0"
+  }
+}
