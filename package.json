@@ -2,7 +2,7 @@
   "name": "fast-job-queue",
   "version": "1.0.0",
   "description": "Create And Manage Your jobs fast in queue",
-  "main": "app.js",
+  "main": "fast-job-queue.js",
   "scripts": {
     "test": "npm start"
   },
