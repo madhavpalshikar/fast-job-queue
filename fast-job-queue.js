@@ -3,7 +3,7 @@ class MyEmitter extends eventManager {}
 const myEmitter = new MyEmitter();
 const redis = require('redis');
 
-class fastJobs extends MyEmitter{
+class fastJobQs extends MyEmitter{
     constructor(){
         super();
         this.client = redis.createClient();
@@ -79,6 +79,6 @@ class fastJobs extends MyEmitter{
     }
 }
 
-module.exports = fastJobs;
+module.exports = fastJobQs;
 
 

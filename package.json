@@ -1,10 +1,14 @@
 {
-  "name": "fast-queue",
+  "name": "fast-job-queue",
   "version": "1.0.0",
   "description": "Create And Manage Your jobs fast in queue",
   "main": "app.js",
   "scripts": {
     "test": "npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madhavwrite/fast-queue.git"
   },
   "keywords": [
     "Fast",
