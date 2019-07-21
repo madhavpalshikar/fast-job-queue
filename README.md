@@ -1,5 +1,4 @@
 # fast-job-queue
-[![NPM Version][npm-image]][npm-url]
 Fast and simple create and manage your jobs/task in queue for NodeJs with redis.
 
 ## Adding and initializing fast-job-queue
@@ -14,13 +13,13 @@ Fast and simple create and manage your jobs/task in queue for NodeJs with redis.
     const job = new fastQueue();
     ```
 ## Adding new Job or Task to queue
-
+3. then, create job
     ```js
     job.createJob({title: "my Job", value: 1});
     ```
 
 ## Receiving Job to process
-
+4. then, 
     ```js
     job.on("process", (jobdata) => {
         
@@ -32,7 +31,7 @@ Fast and simple create and manage your jobs/task in queue for NodeJs with redis.
     ```
 
 ## On Job complete 
-
+5. you can catch completed job here
     ```js
     job.on("complete", (data) => {
         console.log("Job completed!", data);
