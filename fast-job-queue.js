@@ -21,7 +21,7 @@ class fastJobQs extends MyEmitter{
                             if(err){ console.log('Main Interval Next Job error', err); }
                             else{
                                 if(job){
-                                    if(jon.failed < this.retry){
+                                    if(job.failed < this.retry){
                                         this.emit("process", JSON.parse(job));
                                     }
                                     else{
