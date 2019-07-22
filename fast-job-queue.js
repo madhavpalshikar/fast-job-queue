@@ -4,8 +4,9 @@ const myEmitter = new MyEmitter();
 const redis = require('redis');
 
 class fastJobQs extends MyEmitter{
-    constructor(){
+    constructor(settings){
         super();
+        this.retry = settings.retry;
         this.client = redis.createClient();
         this.mainInterval = setInterval(()=>{
             this.client.llen("processing", (err, cnt) =>{
@@ -19,7 +20,12 @@ class fastJobQs extends MyEmitter{
                             if(err){ console.log('Main Interval Next Job error', err); }
                             else{
                                 if(job){
-                                    this.emit("process", JSON.parse(job));
+                                    if(jon.failed < this.retry){
+                                        this.emit("process", JSON.parse(job));
+                                    }
+                                    else{
+                                        this.client.rpoplpush("processing","completed");
+                                    }
                                 }
                             }
                         });
@@ -40,6 +46,7 @@ class fastJobQs extends MyEmitter{
                    console.log("job data", data, job);
                    job.id = data;
                    job.status = "Pending";
+                   job.failed = 0;
                    this.addJobInPending(job);
                    return job; 
                }
@@ -64,7 +71,7 @@ class fastJobQs extends MyEmitter{
             jobdata.status = "Completed";
             this.client.lset("processing", -1, JSON.stringify(jobdata), ()=>{
                 this.client.rpoplpush("processing","completed", (err, job)=>{
-                    if(err){ console.log('Main Interval Next Job error', err); }
+                    if(err){ console.log('Done: error', err); }
                     else{
                         this.emit("complete", JSON.parse(job));
                     }
@@ -75,7 +82,16 @@ class fastJobQs extends MyEmitter{
     }
 
     failed(){
-
+        this.client.lindex("processing", -1, (err, job)=>{
+            let jobdata = JSON.parse(job);
+            jobdata.status = "Failed";
+            jobdata.failed = jobdata.failed + 1;
+            this.client.lset("processing", -1, JSON.stringify(jobdata), ()=>{
+                this.client.rpoplpush("processing","pending", (err, job)=>{
+                    if(err){ console.log('Failed: error', err); }
+                });
+            })
+        })
     }
 }
 

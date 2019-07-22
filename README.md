@@ -4,7 +4,9 @@ Fast and simple create and manage your jobs/task in queue for NodeJs with redis.
 ## Adding and initializing fast-job-queue
 1. Download with npm
 
-    ```js npm install fast-job-queue ```
+    ```js 
+    npm install fast-job-queue 
+    ```
 
 2. then, initialize it..
 
