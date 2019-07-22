@@ -12,7 +12,7 @@ Fast and simple create and manage your jobs/task in queue for NodeJs with redis.
 
     ```js
     const fastQueue = require('fast-job-queue');
-    const job = new fastQueue();
+    const job = new fastQueue({retry: 3});
     ```
 ## Adding new Job or Task to queue
 3. then, create job
@@ -27,7 +27,14 @@ Fast and simple create and manage your jobs/task in queue for NodeJs with redis.
         
         // do your task here
         // once job is completed call done method on job
+        if(success){
             job.done();
+        }
+        else{
+            // failed job will got to queue again for retry 
+            // if retry limit is set in settings.
+            job.failed();
+        }
 
     })
     ```

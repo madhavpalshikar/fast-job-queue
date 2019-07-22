@@ -5,8 +5,9 @@ const redis = require('redis');
 
 class fastJobQs extends MyEmitter{
     constructor(settings){
-        super();
-        this.retry = settings.retry;
+        super();  
+        // retry limit for failed jobs
+        this.retry = settings.retry || 1;
         this.client = redis.createClient();
         this.mainInterval = setInterval(()=>{
             this.client.llen("processing", (err, cnt) =>{
