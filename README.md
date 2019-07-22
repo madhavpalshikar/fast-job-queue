@@ -23,17 +23,17 @@ Fast and simple create and manage your jobs/task in queue for NodeJs with redis.
 ## Receiving Job to process
 4. then, 
     ```js
-    job.on("process", (jobdata) => {
+    job.on("process", (jobdata, done, failed) => {
         
         // do your task here
         // once job is completed call done method on job
         if(success){
-            job.done();
+            done();
         }
         else{
             // failed job will got to queue again for retry 
             // if retry limit is set in settings.
-            job.failed();
+            failed();
         }
 
     })

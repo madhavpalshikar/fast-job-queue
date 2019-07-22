@@ -21,8 +21,9 @@ class fastJobQs extends MyEmitter{
                             if(err){ console.log('Main Interval Next Job error', err); }
                             else{
                                 if(job){
-                                    if(job.failed < this.retry){
-                                        this.emit("process", JSON.parse(job));
+                                    job = JSON.parse(job);
+                                    if(parseInt(job.failed) < parseInt(this.retry)){
+                                        this.emit("process", job, this.done.bind(this), this.failed.bind(this));
                                     }
                                     else{
                                         this.client.rpoplpush("processing","completed");
@@ -38,6 +39,7 @@ class fastJobQs extends MyEmitter{
     }
 
     createJob(job){
+        job.failed = 0;
         this.client.lpush('queue', JSON.stringify(job), (err, data) => {
                if(err){
                    console.log("Error", err);
@@ -47,7 +49,6 @@ class fastJobQs extends MyEmitter{
                    console.log("job data", data, job);
                    job.id = data;
                    job.status = "Pending";
-                   job.failed = 0;
                    this.addJobInPending(job);
                    return job; 
                }
